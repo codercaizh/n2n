@@ -67,11 +67,13 @@ jobs:
 
       - name: Setup openwrt config and environment
         run: |
-          echo "CONFIG_TARGET_armvirt=y" >.config
+          echo "CONFIG_TARGET_x86=n" >.config
+          echo "CONFIG_TARGET_x86_64=n" >>.config
+          echo "CONFIG_TARGET_armvirt=y" >>.config
           echo "CONFIG_TARGET_armvirt_64=y" >>.config
-          echo "CONFIG_TARGET_armvirt_64_Default=y" >.config
+          echo "CONFIG_TARGET_armvirt_64_Default=y" >>.config
           echo "CONFIG_TARGET_ARCH_PACKAGES=\"aarch64_cortex-a53\"" >>.config
-          echo "CONFIG_DEFAULT_TARGET_OPTIMIZATION=\"-Os -pipe -mcpu=cortex-a53\"" >.config
+          echo "CONFIG_DEFAULT_TARGET_OPTIMIZATION=\"-Os -pipe -mcpu=cortex-a53\"" >>.config
           echo "CONFIG_CPU_TYPE=\"cortex-a53\"" >>.config
       - name: Add n2n package to openwrt config
         run: |
@@ -81,6 +83,7 @@ jobs:
       - name: Build a full config from our stub file
         run: |
           make defconfig
+          cat .config
 
       - name: Download openwrt sources
         run: |
